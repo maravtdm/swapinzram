@@ -33,3 +33,6 @@ settings you can just type: "swapinzram restart" to put them into effect.
 
 Didier Spaier, 25 November 2020
 Edited on 22 December 2020
+
+HOWTO:
+https://slackbuilds.org/howto/
