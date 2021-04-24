@@ -22,7 +22,7 @@ cp $CWD/rc.swapinzram $PKG/etc/rc.d
 cp $CWD/swapinzram.conf $PKG/etc/swapinzram.conf.new
     chmod 644 $PKG/etc/swapinzram.conf.new
 
-cp $CWD/README $PKG/usr/doc/${PRGNAM}-${VERSION}
+cp $CWD/README.md $PKG/usr/doc/${PRGNAM}-${VERSION}
     chmod 644 $PKG/usr/doc/${PRGNAM}-${VERSION}/*
 
 echo \
