@@ -15,10 +15,8 @@ chmod 755 -R $PKG/sbin
 chown root:root -R $PKG/sbin
 cp $CWD/swapinzram.conf $PKG/etc/swapinzram.conf.new
 chmod 644 $PKG/etc/swapinzram.conf.new
-chwon root:root $PKG/etc/swapinzram.conf.new
 cp $CWD/README $PKG/usr/doc/${PRGNAM}-${VERSION}
 chmod 644 $PKG/usr/doc/${PRGNAM}-${VERSION}/*
-chown root:root $PKG/usr/doc/${PRGNAM}-${VERSION}/*
 echo \
 "${PRGNAM}: swapinzram (configure a swap block device in RAM using zram)
 ${PRGNAM}:
