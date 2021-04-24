@@ -9,9 +9,7 @@ TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
-if [ -d $PKG ]; then
-    rm -rf $PKG
-fi
+rm -rf $PKG
 
 mkdir -p $PKG/usr/doc/${PRGNAM}-${VERSION}
 mkdir -p $PKG/{sbin,install,etc/rc.d}
