@@ -1,0 +1,29 @@
+#!/bin/sh
+CWD=$(pwd)
+PRGNAM=swapinzram
+VERSION=1
+TMP=$CWD
+ARCH=noarch
+PKG=$CWD/pkg
+BUILD=2slint
+
+rm -rf $PKG
+mkdir -p $PKG/usr/doc/${PRGNAM}-${VERSION}
+mkdir -p $PKG/{sbin,install,etc/rc.d}
+cp $CWD/rc.swapinzram $PKG/etc/rc.d
+chmod 755 -R $PKG/sbin
+chown root:root -R $PKG/sbin
+cp $CWD/swapinzram.conf $PKG/etc/swapinzram.conf.new
+chmod 644 $PKG/etc/swapinzram.conf.new
+chwon root:root $PKG/etc/swapinzram.conf.new
+cp $CWD/README $PKG/usr/doc/${PRGNAM}-${VERSION}
+chmod 644 $PKG/usr/doc/${PRGNAM}-${VERSION}/*
+chown root:root $PKG/usr/doc/${PRGNAM}-${VERSION}/*
+echo \
+"${PRGNAM}: swapinzram (configure a swap block device in RAM using zram)
+${PRGNAM}:
+${PRGNAM}: Author: Didier Spaier." >$PKG/install/slack-desc
+cp $0 $PKG/install/
+cp doinst.sh $PKG/install
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PRGNAM-$VERSION-$ARCH-$BUILD.txz

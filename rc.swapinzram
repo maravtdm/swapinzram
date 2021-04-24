@@ -1,0 +1,61 @@
+#!/bin/sh
+# Configure zram
+# Didier Spaier 2020
+# Dedicated to the public domain as stated in https://unlicense.org/
+[ $(id -u) -ne 0 ] && echo "This script should be run as root." && exit
+if  [ -f /etc/swapinzram.conf ]; then
+	. /etc/swapinzram.conf
+fi
+usage() {
+	echo "usage: $0 start|stop|status|restart"
+}
+start() {
+	if lsblk -lno name,mountpoint|grep ^zram|grep -q SWAP; then
+		echo "A zram block device for swap is already active."
+		exit
+	fi
+	modprobe zram
+	cat /proc/sys/vm/swappiness > /var/lib/swappiness
+	KRAM=$(sed -n 1p /proc/meminfo|sed "s/[ ]\{1,\}/ /"|cut -d" " -f2)
+	COMPRESSION_ALGORITHM=${COMPRESSION_ALGORITHM:-zstd}
+	DISKID=$(cat /sys/class/zram-control/hot_add)
+	echo $DISKID > /var/lib/zramswapdiskid
+	echo $COMPRESSION_ALGORITHM >  /sys/block/zram$DISKID/comp_algorithm
+	PERCENTAGE=${PERCENTAGE:-180}
+	echo $(($KRAM * $PERCENTAGE / 100))K >/sys/block/zram$DISKID/disksize
+	PRIORITY=${PRIORITY:-32567}
+	mkswap /dev/zram$DISKID
+	swapon -p $PRIORITY /dev/zram$DISKID
+	SWAPPINESS=${SWAPPINESS:-80}
+	echo $SWAPPINESS > /proc/sys/vm/swappiness
+}
+stop() {
+	if ! lsblk -lno name,mountpoint|grep ^zram|grep -q SWAP; then
+		echo "No active zram swap device."
+		return
+	else
+		DISKID=$(cat /var/lib/zramswapdiskid)
+		swapoff /dev/zram$DISKID
+		echo 1 > /sys/block/zram$DISKID/reset
+		echo $DISKID > /sys/class/zram-control/hot_remove
+		rm -f /var/lib/zramswapdiskid
+		cat /var/lib/swappiness > /proc/sys/vm/swappiness
+	fi
+}
+status() {
+	if ! lsblk -lno name,mountpoint|grep ^zram|grep -q SWAP; then
+		echo "No active zram swap block device."
+	else
+		# To do: rewrite the output using directly the /sys interface to not
+		# depend on zramctl at all.
+		# lsblk -I 252 -o path,size,mountpoint
+		/sbin/zramctl
+	fi
+}
+restart() {
+	stop && start
+}
+case $1 in
+	start|stop|restart|status|restart) $1 ;;
+	*) usage
+esac
