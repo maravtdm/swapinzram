@@ -10,7 +10,7 @@ PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
 rm -rf $PKG
-
+mkdir -p $TMP $PKG $OUTPUT
 mkdir -p $PKG/usr/doc/${PRGNAM}-${VERSION}
 mkdir -p $PKG/{sbin,install,etc/rc.d}
 
