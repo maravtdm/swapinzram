@@ -8,7 +8,9 @@ CWD=$(pwd)
 TMP=$CWD
 PKG=$CWD/pkg
 
-rm -rf $PKG
+if [ -d $PKG ]; then
+    rm -rf $PKG
+fi
 
 mkdir -p $PKG/usr/doc/${PRGNAM}-${VERSION}
 mkdir -p $PKG/{sbin,install,etc/rc.d}
