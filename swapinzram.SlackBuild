@@ -5,8 +5,9 @@ BUILD=2slint
 ARCH=noarch
 
 CWD=$(pwd)
-TMP=$CWD
-PKG=$CWD/pkg
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
 
 if [ -d $PKG ]; then
     rm -rf $PKG
@@ -22,7 +23,7 @@ cp $CWD/rc.swapinzram $PKG/etc/rc.d
 cp $CWD/swapinzram.conf $PKG/etc/swapinzram.conf.new
     chmod 644 $PKG/etc/swapinzram.conf.new
 
-cp $CWD/README.md $PKG/usr/doc/${PRGNAM}-${VERSION}
+cp $CWD/README $PKG/usr/doc/${PRGNAM}-${VERSION}
     chmod 644 $PKG/usr/doc/${PRGNAM}-${VERSION}/*
 
 echo \
@@ -34,5 +35,6 @@ cp $0 $PKG/install/
 cp doinst.sh $PKG/install
 
 cd $PKG
-/sbin/makepkg -l y -c n $TMP/$PRGNAM-$VERSION-$ARCH-$BUILD.txz
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD.txz
+
 
