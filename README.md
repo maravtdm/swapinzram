@@ -1,4 +1,4 @@
-# swapinzram
+# swapinzram for Slackware
 
 The package swapinzram is intended to extend the swap spaces available beyond
 swap partitions and swap files, providing swap space in the form of a block
