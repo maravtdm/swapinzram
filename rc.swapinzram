@@ -21,7 +21,7 @@ start() {
 	DISKID=$(cat /sys/class/zram-control/hot_add)
 	echo $DISKID > /var/lib/zramswapdiskid
 	echo $COMPRESSION_ALGORITHM >  /sys/block/zram$DISKID/comp_algorithm
-	PERCENTAGE=${PERCENTAGE:-150}
+	PERCENTAGE=${PERCENTAGE:-50}
 	echo $(($KRAM * $PERCENTAGE / 100))K >/sys/block/zram$DISKID/disksize
 	PRIORITY=${PRIORITY:-32567}
 	mkswap /dev/zram$DISKID
