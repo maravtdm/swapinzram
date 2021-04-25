@@ -21,12 +21,12 @@ start() {
 	DISKID=$(cat /sys/class/zram-control/hot_add)
 	echo $DISKID > /var/lib/zramswapdiskid
 	echo $COMPRESSION_ALGORITHM >  /sys/block/zram$DISKID/comp_algorithm
-	PERCENTAGE=${PERCENTAGE:-25}
+	PERCENTAGE=${PERCENTAGE:-150}
 	echo $(($KRAM * $PERCENTAGE / 100))K >/sys/block/zram$DISKID/disksize
 	PRIORITY=${PRIORITY:-32567}
 	mkswap /dev/zram$DISKID
 	swapon -p $PRIORITY /dev/zram$DISKID
-	SWAPPINESS=${SWAPPINESS:-100}
+	SWAPPINESS=${SWAPPINESS:-80}
 	echo $SWAPPINESS > /proc/sys/vm/swappiness
 }
 stop() {
