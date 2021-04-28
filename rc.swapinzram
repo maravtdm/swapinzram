@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Configure zram
 # Didier Spaier 2020
 # Dedicated to the public domain as stated in https://unlicense.org/
